@@ -24,3 +24,18 @@ cv en sumfields_addon
 ## Getting Started
 
 On the **Administer >> Customize Data and Screens >> Summary Fields** admin page, you can find the extra fields.
+
+**Extra fields**
+
+- Largest contribution in the last 12 months
+- Number of contributions in the last month
+- Number of contributions in the last 45 days
+- Number of contributions in the last 62 days
+- Number of contributions in the last 110 days
+- Number of contributions in the last 3 months
+- Number of contributions in the last 6 months
+- Number of contributions in the last 12 months
+- 30x Total lifetime contributions
+- 30x Total contributions in this year
+- 30x Amount of last contribution
+- Number of packages made from last contribution
