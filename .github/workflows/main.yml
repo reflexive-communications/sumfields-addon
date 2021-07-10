@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+env:
+  MYSQL_ROOT_PASSWORD: password
+  MYSQL_DATABASE: drupal
+  APACHE_DIR: "/etc/apache2"
+  SITE_NAME: "composer-site.com"
+  LOCAL_DEPLOY_TARGET: "/var/www/html"
+  EXTENSION_NAME: "sumfields_addon"
+  PHP_VERSION: 7.3
+
+jobs:
+  code-style:
+    name: Code style check
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --rules=@PSR2 --dry-run -v .
