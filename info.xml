@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="sumfields-addon" type="module">
     <file>sumfields_addon</file>
-    <name>Summary fields extra</name>
-    <description>Additonal summary fields for the net.ourpowerbase.sumfields extension</description>
+    <name>Summary Fields Extra</name>
+    <description>Additional summary fields for the net.ourpowerbase.sumfields extension</description>
     <license>AGPL-3.0</license>
     <maintainer>
         <author>Sandor Semsey</author>
