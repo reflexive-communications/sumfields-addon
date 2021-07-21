@@ -164,6 +164,31 @@ function sumfields_addon_civicrm_themes(&$themes)
  */
 
 /**
+ * Implements hook_civicrm_postJob()
+ */
+function sumfields_addon_civicrm_postJob($job, $params, $result)
+{
+    // Select relevant job
+    if ($job->api_entity !== 'SumFields' || $job->api_action !== 'Gendata') {
+        return;
+    }
+
+    // Parse status
+    $status = $result['values'][0] ?? null;
+    if (preg_match('/New Status: ([a-z]+):([0-9 -:]+)$/', $status, $matches)) {
+        $status_name = $matches[1];
+        $status_date = $matches[2];
+
+        // Check if the last run was successful to avoid loops of failed runs
+        if ($status_name == 'success') {
+            // Change status to scheduled and save so on the next run the data will be regenerated
+            $new_status = 'scheduled:'.$status_date;
+            sumfields_save_setting('generate_schema_and_data', $new_status);
+        }
+    }
+}
+
+/**
  * Implements hook_civicrm_sumfields_definitions()
  */
 function sumfields_addon_civicrm_sumfields_definitions(&$custom)
