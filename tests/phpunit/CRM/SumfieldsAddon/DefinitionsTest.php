@@ -160,10 +160,101 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         self::assertStringContainsString('New Status: success', $results[0], 'Failed to enable summary field');
     }
 
+    /**
+     * @throws \API_Exception
+     * @throws \CiviCRM_API3_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testContributionLargestLast12Months()
     {
+        // Enable fields
         $fields = ['contribution_largest_last_12_months'];
         $this->enableSummaryField($fields);
-        self::markTestIncomplete('jocogeza');
+
+        // Add contributions
+        $contact_id = $this->createContact();
+        $amount_1 = 1500;
+        $amount_2 = 1200;
+        $amount_3 = 120;
+        $date_1 = new DateTime();
+        $date_1->sub(DateInterval::createFromDateString('15 months'));
+        $date_2 = new DateTime();
+        $date_2->sub(DateInterval::createFromDateString('8 months'));
+        $date_3 = new DateTime();
+        $date_3->sub(DateInterval::createFromDateString('7 months'));
+        $this->addContribution($contact_id, $amount_1, $date_1->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount_2, $date_2->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount_3, $date_3->format('Y-m-d'));
+
+        // Check value
+        $value = $this->getCustomFieldValue($contact_id, 'Largest Contribution in the last 12 Months');
+        self::assertEquals($amount_2, $value, 'Wrong value returned');
+    }
+
+    /**
+     * @throws \API_Exception
+     * @throws \CiviCRM_API3_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
+    public function testNumberOfContributionsInLastIntervals()
+    {
+        // Enable fields
+        $fields = [
+            'contribution_total_number_1_months',
+            'contribution_total_number_45_days',
+            'contribution_total_number_62_days',
+            'contribution_total_number_110_days',
+            'contribution_total_number_3_months',
+            'contribution_total_number_6_months',
+            'contribution_total_number_12_months',
+        ];
+        $this->enableSummaryField($fields);
+
+        // Add contributions
+        $contact_id = $this->createContact();
+        $amount = 100;
+        $date_now = new DateTime();
+        $date_15_days = new DateTime();
+        $date_15_days->sub(DateInterval::createFromDateString('15 days'));
+        $date_40_days = new DateTime();
+        $date_40_days->sub(DateInterval::createFromDateString('40 days'));
+        $date_60_days = new DateTime();
+        $date_60_days->sub(DateInterval::createFromDateString('60 days'));
+        $date_75_days = new DateTime();
+        $date_75_days->sub(DateInterval::createFromDateString('75 days'));
+        $date_111_days = new DateTime();
+        $date_111_days->sub(DateInterval::createFromDateString('111 days'));
+        $date_4_months = new DateTime();
+        $date_4_months->sub(DateInterval::createFromDateString('4 months'));
+        $date_7_months = new DateTime();
+        $date_7_months->sub(DateInterval::createFromDateString('7 months'));
+        $date_13_months = new DateTime();
+        $date_13_months->sub(DateInterval::createFromDateString('13 months'));
+
+        $this->addContribution($contact_id, $amount, $date_now->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_15_days->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_40_days->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_60_days->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_75_days->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_111_days->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_4_months->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_7_months->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_13_months->format('Y-m-d'));
+
+        // Check value
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 1 Month');
+        self::assertEquals(2, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 45 Days');
+        self::assertEquals(3, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 62 Days');
+        self::assertEquals(4, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 3 Months');
+        self::assertEquals(5, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 110 Days');
+        self::assertEquals(5, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 6 Months');
+        self::assertEquals(7, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 12 Months');
+        self::assertEquals(8, $value, 'Wrong value returned');
     }
 }
