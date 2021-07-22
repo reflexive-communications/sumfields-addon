@@ -1,5 +1,8 @@
 <?php
 
+use Civi\Api4\Contact;
+use Civi\Api4\Contribution;
+use Civi\Api4\CustomField;
 use Civi\Test;
 use Civi\Test\HeadlessInterface;
 use PHPUnit\Framework\TestCase;
@@ -65,6 +68,80 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
     }
 
     /**
+     * Create contact
+     *
+     * @return int Contact ID
+     *
+     * @throws \API_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
+    protected function createContact(): int
+    {
+        $result = Contact::create()
+            ->addValue('contact_type', 'Individual')
+            ->addValue('first_name', 'user_'.self::getNextContactSequence())
+            ->execute();
+        self::assertCount(1, $result, 'Failed to create contact');
+        $contact = $result->first();
+        self::assertArrayHasKey('id', $contact, 'Contact ID not found');
+        return (int)$contact['id'];
+    }
+
+    /**
+     * Add contribution
+     *
+     * @param int $contact_id Contact ID
+     * @param float $amount Total amount
+     * @param string $date Receive date
+     *
+     * @throws \API_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
+    protected function addContribution(int $contact_id, float $amount, string $date = ''): void
+    {
+        $result = Contribution::create()
+            ->addValue('contact_id', $contact_id)
+            ->addValue('financial_type_id', 1)
+            ->addValue('total_amount', $amount)
+            ->addValue('receive_date', $date)
+            ->execute();
+        self::assertCount(1, $result, 'Failed to create contribution');
+        self::assertArrayHasKey('id', $result->first(), 'Contribution ID not found');
+    }
+
+    /**
+     * Get custom field value
+     *
+     * @param int $entity_id Entity ID
+     * @param string $custom_field_label Custom field label
+     *
+     * @return mixed Raw field value
+     *
+     * @throws \API_Exception
+     * @throws \CiviCRM_API3_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
+    protected function getCustomFieldValue(int $entity_id, string $custom_field_label)
+    {
+        // Get custom field ID from label
+        $result = CustomField::get()
+            ->addSelect('id')
+            ->addWhere('label', '=', $custom_field_label)
+            ->setLimit(1)
+            ->execute();
+        self::assertCount(1, $result, 'Failed to find custom field');
+        $custom_field_id = $result->first()['id'];
+
+        // Get field value
+        $result = civicrm_api3('CustomValue', 'getdisplayvalue', [
+            'entity_id' => $entity_id,
+            'custom_field_id' => $custom_field_id,
+        ]);
+        self::assertCount(1, $result['values'], 'Failed to find custom field value');
+        return (array_shift($result['values']))['raw'];
+    }
+
+    /**
      * Enable individual summary fields
      *
      * @param array $fields List of fields to enable
@@ -77,7 +154,7 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         // Regenerate fields
         $results = [];
         sumfields_save_setting('generate_schema_and_data', 'scheduled:'.date('Y-m-d H:i:s'));
-        sumfields_gen_data($results);
+        self::assertTrue(sumfields_gen_data($results), 'Failed to generate data');
 
         self::assertCount(1, $results);
         self::assertStringContainsString('New Status: success', $results[0], 'Failed to enable summary field');
