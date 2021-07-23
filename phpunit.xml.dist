@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         convertDeprecationsToExceptions="false"
+         processIsolation="false"
+         stopOnFailure="false"
+         bootstrap="tests/phpunit/bootstrap.php"
+         testdox="true">
+    <testsuites>
+        <testsuite name="all">
+            <directory>./tests/phpunit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./</directory>
+            <exclude>
+                <!-- Skip the test directory -->
+                <directory>./tests</directory>
+                <!-- Skip the generated files -->
+                <file>./sumfields_addon.php</file>
+                <file>./sumfields_addon.civix.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+    <listeners>
+        <listener class="Civi\Test\CiviTestListener">
+            <arguments/>
+        </listener>
+    </listeners>
+</phpunit>
