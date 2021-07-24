@@ -10,12 +10,12 @@ class CRM_SumfieldsAddon_Service
      * so the summary fields will be (re)generated on the next run
      *
      * @param CRM_Core_DAO_Job $job The executed job
-     * @param mixed $result array returned by the job / exception that interrupted the execution of the job
+     * @param mixed $result Array returned by the job / Exception that interrupted the execution of the job
      */
     public static function statusToScheduled($job, $result)
     {
-        // Select relevant job
-        if ($job->api_entity !== 'SumFields' || $job->api_action !== 'Gendata') {
+        // Check result and select relevant job
+        if (!is_array($result) || $job->api_entity !== 'SumFields' || $job->api_action !== 'Gendata') {
             return;
         }
 
