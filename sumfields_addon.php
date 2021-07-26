@@ -164,6 +164,14 @@ function sumfields_addon_civicrm_themes(&$themes)
  */
 
 /**
+ * Implements hook_civicrm_postJob()
+ */
+function sumfields_addon_civicrm_postJob($job, $params, $result)
+{
+    CRM_SumfieldsAddon_Service::statusToScheduled($job, $result);
+}
+
+/**
  * Implements hook_civicrm_sumfields_definitions()
  */
 function sumfields_addon_civicrm_sumfields_definitions(&$custom)
