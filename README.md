@@ -3,6 +3,9 @@
 This extension adds extra summary fields provided by the [Summary Fields](https://github.com/progressivetech/net.ourpowerbase.sumfields)
 extension.
 
+Also changes functionality, fields are always regenerated with the `SumFields.Gendata` API call.
+Originally fields are only regenerated when the fiscal year has changed since the last run.
+
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 ## Requirements
@@ -35,7 +38,3 @@ On the **Administer >> Customize Data and Screens >> Summary Fields** admin page
 - Number of contributions in the last 3 months
 - Number of contributions in the last 6 months
 - Number of contributions in the last 12 months
-- 30x Total lifetime contributions
-- 30x Total contributions in this year
-- 30x Amount of last contribution
-- Number of packages made from last contribution
