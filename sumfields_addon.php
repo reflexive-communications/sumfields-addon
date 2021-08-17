@@ -297,4 +297,19 @@ function sumfields_addon_civicrm_sumfields_definitions(&$custom)
         t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
         t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
     ];
+    // Number of contributions in the last 2 years
+    $custom['fields']['contribution_total_number_2_years'] = [
+        'optgroup' => 'fundraising',
+        'label' => ts('Count of Contributions in Last 2 Years'),
+        'data_type' => 'Int',
+        'html_type' => 'Text',
+        'weight' => '10',
+        'text_length' => '32',
+        'trigger_table' => 'civicrm_line_item',
+        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
+        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
+        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 2 YEAR) AND NOW() AND
+        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
+        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
+    ];
 }
