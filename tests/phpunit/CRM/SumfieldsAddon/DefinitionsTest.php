@@ -207,6 +207,7 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
             'contribution_total_number_3_months',
             'contribution_total_number_6_months',
             'contribution_total_number_12_months',
+            'contribution_total_number_2_years',
         ];
         $this->enableSummaryField($fields);
 
@@ -230,6 +231,8 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         $date_7_months->sub(DateInterval::createFromDateString('7 months'));
         $date_13_months = new DateTime();
         $date_13_months->sub(DateInterval::createFromDateString('13 months'));
+        $date_25_months = new DateTime();
+        $date_25_months->sub(DateInterval::createFromDateString('25 months'));
 
         $this->addContribution($contact_id, $amount, $date_now->format('Y-m-d'));
         $this->addContribution($contact_id, $amount, $date_15_days->format('Y-m-d'));
@@ -240,6 +243,7 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         $this->addContribution($contact_id, $amount, $date_4_months->format('Y-m-d'));
         $this->addContribution($contact_id, $amount, $date_7_months->format('Y-m-d'));
         $this->addContribution($contact_id, $amount, $date_13_months->format('Y-m-d'));
+        $this->addContribution($contact_id, $amount, $date_25_months->format('Y-m-d'));
 
         // Check value
         $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 1 Month');
@@ -256,5 +260,7 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         self::assertEquals(7, $value, 'Wrong value returned');
         $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 12 Months');
         self::assertEquals(8, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 2 Years');
+        self::assertEquals(9, $value, 'Wrong value returned');
     }
 }

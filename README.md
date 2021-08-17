@@ -38,3 +38,4 @@ On the **Administer >> Customize Data and Screens >> Summary Fields** admin page
 - Number of contributions in the last 3 months
 - Number of contributions in the last 6 months
 - Number of contributions in the last 12 months
+- Number of contributions in the last 2 years
