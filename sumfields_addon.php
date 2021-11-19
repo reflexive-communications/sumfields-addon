@@ -192,111 +192,42 @@ function sumfields_addon_civicrm_sumfields_definitions(&$custom)
         t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND
         t1.contribution_status_id = 1 AND t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
     ];
-    // Number of contributions in the last 45 days
-    $custom['fields']['contribution_total_number_45_days'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 45 Days'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 45 DAY) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
-    // Number of contributions in the last 62 days
-    $custom['fields']['contribution_total_number_62_days'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 62 Days'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 62 DAY) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
-    // Number of contributions in the last 110 days
-    $custom['fields']['contribution_total_number_110_days'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 110 Days'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 110 DAY) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
+    // Number of contributions in the last x days
+    $last_days = [45, 62, 110];
+    foreach ($last_days as $day) {
+        $custom['fields']['contribution_total_number_'.$day.'_days'] = [
+            'optgroup' => 'fundraising',
+            'label' => ts('Count of Contributions in Last '.$day.' Days'),
+            'data_type' => 'Int',
+            'html_type' => 'Text',
+            'weight' => '10',
+            'text_length' => '32',
+            'trigger_table' => 'civicrm_line_item',
+            'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
+            JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
+            WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL '.$day.' DAY) AND NOW() AND
+            t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
+            t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
+        ];
+    }
     // Number of contributions in the last month
-    $custom['fields']['contribution_total_number_1_months'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 1 Month'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
-    // Number of contributions in the last 3 months
-    $custom['fields']['contribution_total_number_3_months'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 3 Months'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
-    // Number of contributions in the last 6 months
-    $custom['fields']['contribution_total_number_6_months'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 6 Months'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 6 MONTH) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
-    // Number of contributions in the last 12 months
-    $custom['fields']['contribution_total_number_12_months'] = [
-        'optgroup' => 'fundraising',
-        'label' => ts('Count of Contributions in Last 12 Months'),
-        'data_type' => 'Int',
-        'html_type' => 'Text',
-        'weight' => '10',
-        'text_length' => '32',
-        'trigger_table' => 'civicrm_line_item',
-        'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
-        JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
-        WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() AND
-        t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
-        t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
-    ];
+    $last_months = [1, 3, 6, 12];
+    foreach ($last_months as $month) {
+        $custom['fields']['contribution_total_number_'.$month.'_months'] = [
+            'optgroup' => 'fundraising',
+            'label' => ts('Count of Contributions in Last '.$month.' Months'),
+            'data_type' => 'Int',
+            'html_type' => 'Text',
+            'weight' => '10',
+            'text_length' => '32',
+            'trigger_table' => 'civicrm_line_item',
+            'trigger_sql' => '(SELECT COALESCE(COUNT(DISTINCT t1.id), 0) FROM civicrm_contribution t1
+            JOIN civicrm_line_item t2 ON t1.id = t2.contribution_id
+            WHERE CAST(receive_date AS DATE) BETWEEN DATE_SUB(NOW(), INTERVAL '.$month.' MONTH) AND NOW() AND
+            t1.contact_id = (SELECT contact_id FROM civicrm_contribution cc WHERE cc.id = NEW.contribution_id) AND t1.contribution_status_id = 1 AND
+            t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
+        ];
+    }
     // Number of contributions in the last 2 years
     $custom['fields']['contribution_total_number_2_years'] = [
         'optgroup' => 'fundraising',
