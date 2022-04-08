@@ -1,5 +1,7 @@
 # sumfields-addon
 
+[![CI](https://github.com/reflexive-communications/sumfields-addon/actions/workflows/main.yml/badge.svg)](https://github.com/reflexive-communications/sumfields-addon/actions/workflows/main.yml)
+
 This extension adds extra summary fields provided by the [Summary Fields](https://github.com/progressivetech/net.ourpowerbase.sumfields)
 extension.
 
