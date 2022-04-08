@@ -12,11 +12,11 @@
         <url desc="Main Extension Page">https://github.com/reflexive-communications/sumfields-addon</url>
         <url desc="Documentation">https://github.com/reflexive-communications/sumfields-addon</url>
         <url desc="Support">https://github.com/reflexive-communications/sumfields-addon/issues</url>
-        <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
+        <url desc="Licensing">https://www.gnu.org/licenses/agpl-3.0.html</url>
     </urls>
     <releaseDate>2021-11-19</releaseDate>
     <version>1.2.1</version>
-    <develStage>alpha</develStage>
+    <develStage>stable</develStage>
     <compatibility>
         <ver>5.0</ver>
     </compatibility>
