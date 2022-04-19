@@ -34,6 +34,7 @@ On the **Administer >> Customize Data and Screens >> Summary Fields** admin page
 
 - Largest contribution in the last 12 months
 - Number of contributions in the last month
+- Number of contributions in the last 40 days
 - Number of contributions in the last 45 days
 - Number of contributions in the last 62 days
 - Number of contributions in the last 110 days
