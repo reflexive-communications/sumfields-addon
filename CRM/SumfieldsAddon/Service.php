@@ -58,7 +58,7 @@ class CRM_SumfieldsAddon_Service
             t1.contribution_status_id = 1 AND t2.financial_type_id IN (%financial_type_ids) AND t1.is_test = 0)',
         ];
         // Number of contributions in the last X days
-        $last_days = [45, 62, 110];
+        $last_days = [40, 45, 62, 110];
         foreach ($last_days as $day) {
             $custom['fields']['contribution_total_number_'.$day.'_days'] = [
                 'optgroup' => 'fundraising',
