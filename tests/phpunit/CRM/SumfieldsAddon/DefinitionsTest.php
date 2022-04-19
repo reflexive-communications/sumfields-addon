@@ -201,6 +201,7 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
         // Enable fields
         $fields = [
             'contribution_total_number_1_months',
+            'contribution_total_number_40_days',
             'contribution_total_number_45_days',
             'contribution_total_number_62_days',
             'contribution_total_number_110_days',
@@ -247,6 +248,8 @@ class CRM_SumfieldsAddon_DefinitionsTest extends TestCase implements HeadlessInt
 
         // Check value
         $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 1 Months');
+        self::assertEquals(2, $value, 'Wrong value returned');
+        $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 40 Days');
         self::assertEquals(2, $value, 'Wrong value returned');
         $value = $this->getCustomFieldValue($contact_id, 'Count of Contributions in Last 45 Days');
         self::assertEquals(3, $value, 'Wrong value returned');
